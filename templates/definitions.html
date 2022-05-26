@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    New Flashcard
+{% endblock %}
+
+{% block main %}
+    <h3>Choose at least one definition</h3>
+    <form action="/submit-flashcard" method="POST">
+        <div class="form-group form-center">
+            <input name="folder_id" type="hidden" value="{{ folder_id }}">
+            <input name="word" type="hidden" value="{{ word }}">
+            {% for d in definitions %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="definition" value="{{ d }}">
+                    <label class="form-check-label">
+                    <!-- safe filter enables program to render any HTML values inside the parsed string-->
+                        {{ d|safe }}
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+        <input class="btn btn-success" type="submit" name="button" value="Finish">
+    </form>
+    <script>
+        $(document).ready(function() {
+            $("form").submit(function() {
+                // if no definition is selected
+                if ($("input:checked").length == 0)
+                {
+                    alert("Please choose at least one definition.");
+                    return false; //do not submit. this line is applicable to elements with submit roles
+                }
+            })
+        });
+    </script>
+{% endblock %}

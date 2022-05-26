@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    New List
+{% endblock %}
+
+{% block main %}
+    <form action="/new-set" method="POST">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="folder" placeholder="Title" type="text" maxlength="25">
+        </div>
+        <button class="btn btn-success" type="submit">Create</button>
+    </form>
+{% endblock %}

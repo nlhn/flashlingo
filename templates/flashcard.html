@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    New Flashcard
+{% endblock %}
+
+{% block main %}
+    <form>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="word" placeholder="Term (Word or Phrase)" type="text" required>
+        </div>
+        <div class="form-group">
+            <select class="form-control" name="folder_id" required>
+                {% if folder_id == 0 %}
+                    <option disabled selected value>Choose a Set</option>
+                    {% for row in rows %}
+                        <option value = "{{ row.folder_id }}"> {{ row.folder }}</option>
+                    {% endfor %}
+                {% else %}
+                    <option disabled value>Choose a Set</option>
+                    {% for row in rows %}
+                        <!--make sure both variables are of the same int type -->
+                        {% if row.folder_id|int() == folder_id|int() %}
+                            <option value = "{{ row.folder_id }}" selected> {{ row.folder }} </option>
+                        {% else %}
+                            <option value = "{{ row.folder_id }}">{{ row.folder }}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#manual" aria-expanded="false" aria-controls="manual">Continue Typing</button>
+            <button class="btn btn-primary" type="submit" formaction="/new-flashcard/add-definitions" formmethod="POST" id="lazy-btn">Look Up</button></button>
+        </div>
+        <div class="collapse" id="manual">
+            <div class="card card-body">
+                <div class="form-group" id="textarea">
+                    <textarea autocomplete="off" class="form-control" name="definition" placeholder="Type a Definition Here" rows="4" required></textarea>
+                    <button class="btn btn-link remove-btn align-top text-white" disabled>Remove</button>
+                </div>
+                <div class="form-group mb-0">
+                    <!-- button in form has default behavior of submit, must specify type="button" to override it-->
+                    <button class="btn btn-primary" type="button" onclick="newField()">Add Another Definition</button>
+                    <input class="btn btn-success" type="submit" formaction="/submit-flashcard" formmethod="POST" value="Create" name="button">
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+    // If user chooses to autofill the card, they won't be required to fill out the input fields
+        document.getElementById("lazy-btn").onclick = function() {
+            let els = document.getElementsByTagName("textarea");
+            for (let i = 0; i < els.length; i++) {
+                els[i].required = false;
+            }
+        };
+        function newField() {
+            // pass the element being clicked on to remove function
+            var field = '<div><textarea autocomplete="off" class="form-control" name="definition" placeholder="Type a Definition Here" rows="4" required></textarea><button onclick="removeField(this)" class="btn btn-link remove-btn align-top">Remove</button></div>';
+            $('#textarea').append(field);
+        }
+        function removeField(el) {
+            $(el).parent('div').remove();
+        }
+    </script>
+{% endblock %}

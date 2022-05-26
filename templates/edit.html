@@ -1,0 +1,146 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Edit
+{% endblock %}
+
+{% block main %}
+    <!-- request.form.get is only able to extract data from input or textarea elements-->
+    <!-- however, we only want to display the input field when user clicks on the content they want to change -->
+    <!-- so making everything input elements is not possible as it will ruin the appearance of the table -->
+    <!-- the trick is to put data in an editable div element then place a hidden input element right next to it (aka a sibling element) -->
+    <!-- whenever user changes the div content, the value of the hidden input element will change as well -->
+    <form action="/edit/finish" method="post">
+        <div class="form-group">
+            <input name="folder_id" type="hidden" value="{{ folder_id }}">
+            <h3 contentEditable="true" class="text-center d-inline-block list-edit px-2 rounded" onpaste="changeValue(this)" onblur="changeValue(this)">{{ folder }}</h3>
+            <input name="new_folder" type="hidden" value="{{ folder }}">
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col20 text-break">Term</th>
+                    <th class="col60">Definition</th>
+                    <th class="col20 text-center">
+                        <!--button is only shown if there is at least one *visible* entry inside the table -->
+                        {% if cards|length != 0 %}
+                            <a class="text-blue text-decoration-none user-select-none" role="button" onclick="selectAll();" id="select-btn">Select All</a>
+                        {% endif %}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for card in cards %}
+                    <tr>
+                        <td>
+                            <div contentEditable="true" class="term-edit text-break rounded" onblur="changeValue(this)">{{ card.word|safe }}</div>
+                            <input type="hidden" name="word" value="{{ card.word }}">
+                            <input type="hidden" name="word_id" value="{{ card.word_id }}">
+                        </td>
+                        <td>
+                            {% for definition in card.definitions %}
+                                <li contentEditable="true" class="term-edit rounded" onblur="changeValue(this)">{{ definition|safe }}</li>
+                                <input type="hidden" name="definition" value="{{ definition }}">
+                            {% endfor %}
+                            {% for id in card.def_id %}
+                                <input type="hidden" name="def_id" value="{{ id }}">
+                                {{ def_id }}
+                            {% endfor %}
+                        </td>
+                        <td class="text-center">
+                            <input type="checkbox" name="delete_id" value="{{ card.word_id }}">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button class="btn btn-primary" type="button" id="delete-btn" onclick="deleteTerms()" disabled>Delete Selected Terms</button>
+        <button class="btn btn-success" type="submit">Finish</button>
+    </form>
+    <script>
+        var checkboxes = $("input:checkbox");
+        for(var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].addEventListener('change', BtnControl);
+        }
+        function BtnControl() {
+            console.log($("input:checkbox:checked:visible").length);
+            if ($("input:checkbox:checked:visible").length > 0) {
+                $("#delete-btn").prop('disabled', false);
+                document.getElementById("select-btn").innerHTML = "Deselect All";
+            }
+            else {
+                $("#delete-btn").prop('disabled', true);
+                document.getElementById("select-btn").innerHTML = "Select All";
+            }
+        }
+        function selectAll() {
+            if (document.getElementById("select-btn").textContent == "Select All") {
+                $("input:checkbox:visible").prop("checked", true);
+                document.getElementById("select-btn").innerHTML = "Deselect All";
+            }
+            else {
+                $("input:checkbox:visible").prop("checked", false);
+                document.getElementById("select-btn").innerHTML = "Select All";
+            }
+            BtnControl();
+        }
+        function deleteTerms() {
+            if (confirm("Are you sure?") == true) {
+                // do nothing if user clicks cancel
+                for (let i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked == true) {
+                    // hide the selected terms as if that they have been removed from the set
+                        checkboxes[i].closest('tr').style.display = "none";
+                    }
+                }
+                // if all rows have been hided except header row, disable the delete button and hide the select button
+                // $('selector:visible').length
+                // put BtnControl in front to avoid error when the select btn is removed
+                BtnControl();
+                if ($('tr:visible').length == 1) {
+                    document.getElementById("delete-btn").disabled = true;
+                    document.getElementById("select-btn").remove();
+                }
+            }
+        }
+        // by default HTML will also paste the style of the pasted content
+        // the following is to grab only the plain text
+        var ce = document.querySelectorAll('[contenteditable]');
+        for (let i = 0; i < ce.length; i++) {
+            ce[i].addEventListener('paste', function (e) {
+                e.preventDefault();
+                var text = e.clipboardData.getData('text/plain');
+                document.execCommand('insertText', false, text);
+            });
+        }
+        // first make sure the new title of the set (if any) does not exceed character limit
+        // onblur: when an element loses focus, in this case when user finishes editing the element (either manually typed or pasted)
+        // grab the new content of the element, then change the value of its sibling element accordingly
+        function changeValue(el) {
+            if ($(el).next().attr("name") == "new_folder" && $(el).text().length > 25) {
+                alert("Title must not exceed 25 characters.");
+            }
+            var c = el.childNodes;
+            var newVal = "";
+            for (let i = 0; i < c.length; i++) {
+                // If the child node is text
+                if (c[i].nodeName == "#text") {
+                    newVal = newVal + c[i].nodeValue + "<br>";
+                }
+                // If the child node is a div element with some text content, get all the grandchild nodes
+                // If any of the grandchild nodes is text, grab its value
+                else if (c[i].nodeName == "DIV" && c[i].innerHTML != "<br>") {
+                    gc = c[i].childNodes;
+                    console.log(gc.length);
+                    for (let j = 0; j < gc.length; j++) {
+                        if (gc[j].nodeName == "#text") {
+                            console.log(gc[j].nodeValue);
+                            newVal = newVal + gc[j].nodeValue + "<br>";
+                        }
+                    }
+                }
+            }
+            $(el).next().attr("value", newVal);
+        }
+    </script>
+{% endblock %}

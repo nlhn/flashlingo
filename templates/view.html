@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Review
+{% endblock %}
+
+{% block main %}
+    <h3>Hover over to flip the card</h3>
+    <button class="btn btn-link mb-3" data-toggle="collapse" data-target="#selectList" aria-expanded="true" aria-controls="selectList">Jump to another set?</button>
+    <div class="collapse mb-3" id="selectList">
+        <form action="/view" method="POST">
+            <select class="form-control text-truncate d-inline-block" name="folder_id" required>
+                <option disabled>Choose a set</option>
+                {% for row in rows %}
+                    {% if folder_id|int() == row.folder_id|int() %}
+                    <option value = "{{ row.folder_id }}" selected>{{ row.folder }}</option>
+                    {% elif row.word_count == 0 %}
+                    <option disabled> {{ row.folder }}</option>
+                    {% else %}
+                    <option value = "{{ row.folder_id }}">{{ row.folder }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <button class="btn btn-success ml-2" type="submit">Go</button>
+        </form>
+    </div>
+    <div class="flip-card mb-4">
+        {% for card in cards %}
+            <div class="flip-card-inner">
+                <div class="flip-card-front justify-content-center d-flex align-items-center text-break">{{ card.word|safe }}</div>
+                <div class="flip-card-back list-group list-group-flush">
+                    {% for definition in card.definitions %}
+                        <li class="list-group-item">{{ definition|safe }}</li>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <button onclick="showPrev()" id="prev-btn" class="btn btn-primary">Prev</button>
+        <button onclick="showNext()" id="next-btn" class="btn btn-primary">Next</button>
+    </div>
+    <form class="form-group" action="/view", method="post">
+        <input name="folder_id" type="hidden" value="{{ folder_id }}">
+        <!-- Django scripting language-->
+        {% if cards|length > 1 %}
+            <input type="submit" name="button" value="Shuffle!" class="btn btn-success">
+        {% else %}
+            <input type="submit" value="Shuffle!" class="btn btn-success" disabled>
+        {% endif %}
+    </form>
+    <script>
+        var visibleCard = 0
+        function showCard() {
+            $(".flip-card-inner").hide();
+            // show only the card with the specified index
+            $(".flip-card-inner:eq("+ visibleCard +")").show();
+            // enable or disable control button(s) if appropriate
+            if (visibleCard == 0 && visibleCard == $(".flip-card-inner").length-1) {
+                document.getElementById("prev-btn").disabled = true;
+                document.getElementById("next-btn").disabled = true;
+            }
+            else if (visibleCard == 0) {
+                document.getElementById("prev-btn").disabled = true;
+                document.getElementById("next-btn").disabled = false;
+            }
+            else if (visibleCard == $(".flip-card-inner").length-1) {
+                document.getElementById("next-btn").disabled = true;
+                document.getElementById("prev-btn").disabled = false;
+            }
+            else {
+                document.getElementById("prev-btn").disabled = false;
+                document.getElementById("next-btn").disabled = false;
+            }
+        }
+        // show the first card when page is loaded
+        showCard();
+        function showPrev() {
+            visibleCard--;
+            showCard();
+        }
+        function showNext() {
+            visibleCard++;
+            showCard();
+        }
+    </script>
+{% endblock %}

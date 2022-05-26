@@ -1,0 +1,273 @@
+h3 {
+    font-weight: 400;
+    margin-bottom: 30px;
+    font-size: 35px;
+    color: #22558a;
+}
+nav {
+    background: #143352;
+}
+.nav-link {
+    color: white!important;
+    opacity: 0.6;
+}
+.nav-link:hover {
+    opacity: 1;
+}
+.na
+nav .navbar-brand {
+    /* size for brand */
+    font-size: xx-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .green {
+    font-family: 'Varela Round', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    color: #13d616;
+}
+nav .navbar-brand .white {
+    font-family: 'Varela Round', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+}
+main .form-control {
+    /* Center form controls */
+    display: inline-block;
+
+    /* Override Bootstrap's 100% width for form controls */
+    width: auto;
+}
+
+main {
+    /* Scroll horizontally as needed */
+    overflow-x: auto;
+
+    /* Center contents */
+    text-align: center;
+}
+
+main img {
+    /* Constrain images on small screens */
+    max-width: 100%;
+}
+td, th, .form-check {
+    text-align: left;
+}
+/* INDEX */
+h4 {
+    font-family: Merriweather;
+    font-size: 25px;
+}
+h5 {
+    font-weight: lighter;
+    font-size: 20px;
+    padding-bottom: 6px;
+}
+.entries {
+    margin: 0 auto;
+}
+.entry {
+    margin: 1rem 0;
+    box-shadow: 0 4px 8px 0 gray;
+    display: inline-block;
+    border-radius: 0.8rem;
+    width: 300px;
+    height: 200px;
+    position: relative;
+    background: rgb(28,177,238);
+    background: linear-gradient(0deg, rgba(28,177,238,1) 0%, rgba(38,215,74,1) 100%);
+    animation: drop 1s;
+}
+@keyframes drop {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+.entry-bg {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.8rem;
+    background: white;
+    opacity: 0;
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+.entry-text {
+    position: absolute;
+    display: block;
+    bottom: 0;
+    padding-left: 1rem;
+    text-align: left;
+    background: transparent;
+}
+.text-break {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.entry-btn {
+    display: flex;
+    height: 100%;
+    /* center horizontally and vertically */
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+.btn-icon, .btn-icon-disabled, .btn-icon-disabled:hover {
+    margin: 0 10px;
+    width: 58px;
+    height: 58px;
+    border: 4px solid #143352;
+    color: #143352;
+    border-radius: 50%;
+    font-size: 22px;
+    font-weight: bold;
+}
+.btn-icon:hover {
+    border: 6px solid #143352;
+    color: #143352;
+}
+.entry-text-content {
+    font-weight: bold;
+    display: block;
+    color: white;
+    opacity: 1;
+    max-width: 240px;
+}
+.entry-btn-btn {
+    z-index: 2;
+    opacity: 0;
+}
+.entry:hover .entry-btn-btn {
+    opacity: 1;
+    transition: 0.5s;
+}
+.entry:hover .entry-bg {
+    opacity: 0.8;
+    transition: 0.5s;
+}
+/* FLASHCARD */
+.list-group-flush {
+    border-radius: 0.8rem;
+}
+.flip-card {
+    background-color: transparent;
+    width: 400px;
+    height: 300px;
+    perspective: 1000px;
+    margin: auto;
+}
+
+.flip-card-inner {
+    border-radius: 0.8rem;
+    background-color: white;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.flip-card-front {
+    font-size: 30px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+    overflow-y: auto;
+}
+/* Column width */
+.col30 {
+    width: 30%;
+}
+.col60 {
+    width: 60%;
+}
+.col20 {
+    width: 20%;
+}
+.form-check-label
+{
+    margin: 0 20px;
+}
+.form-center
+{
+    margin: 1rem auto;
+    width: 60%;
+}
+#selectList form {
+    max-width: 50%;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+select {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+li
+{
+    list-style: none;
+}
+textarea.form-control
+{
+    width: 70%;
+}
+.remove-btn
+{
+    padding: 0px 10px;
+}
+.list-edit:focus
+{
+    border: 1px solid #80bdff;
+    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+    outline: none;
+    background: white!important;
+    transition: 0.2s;
+}
+.term-edit:focus
+{
+    outline: none;
+    border: 3px solid #dee2e6;
+    margin: 5px 0;
+    padding: 0 3px;
+    background: white;
+}
+.list-edit:hover
+{
+    background: #dee2e6;
+    transition: 0.2s;
+}
+.term-edit
+{
+    background: inherit;
+    border: none;
+}
