@@ -4,12 +4,12 @@ https://youtu.be/yTSyDbN-j4E
 
 #### Description:
 A simple flashcard web application built on Flask using Python, SQL, HTML, CSS, and Bootstrap.
-User can automatically generate e-flashcards from dictionary lookups (current version only supports English-English flashcards).
+User can automatically generate e-flashcards from dictionary lookups (the current version only supports English-English flashcards).
 
 #### Features:
 - Add, remove, or edit a flashcard set
 - Create a flashcard manually or automatically from dictionary lookup (English words and phrases only)
-- Review a set with the option to randomize the cards.
+- Review flashcards with the option to shuffle the cards.
 
 #### What's Included in the Directory:
 The directory includes two folders and three files.
@@ -19,9 +19,9 @@ The first file `application.py` stores the main function of this application. Th
 #### Usage:
 Here is an overview of how the application works:
 1. User will be prompted to sign into their account before they have access to the rest of the application. They must create an account if they do not have one.
-2. Onced logged in, user will be redirected to the main page which displays all of their flashcard sets (if any). User can choose to review, edit, or remove any existing sets. The navigation bar now displays four options, `New Set` and `New Flashcard` on the left side, and `Change Password` and `Log Out` on the right side.
+2. Onced logged in, user will be redirected to the main page which shows all of their active flashcard sets (if any). User can review, edit, or remove any of these sets. The navigation bar at the top of the screen now shows four options, `New Set` and `New Flashcard` on the left side, and `Change Password` and `Log Out` on the right side.
 3. User must have at least one flashcard set before they can create a flashcard with `New Flashcard`.
-4. User can create their flashcards in two ways. They can either manually enter the definition(s) or have the application copy-paste the definition(s) from Wiktionary (the term must be English).
+4. User can create their flashcards in two ways: entering the definition(s) manually or havinh the application parse the definition(s) from Wiktionary (the term must be English).
 5. If the user's input is invalid, the application will render an error message explaining why the input was rejected.
 
 #### What's Stored in the SQL Database:
