@@ -4,7 +4,7 @@ https://youtu.be/yTSyDbN-j4E
 
 #### Description:
 A simple flashcard web application built on Flask using Python, SQL, HTML, CSS, and Bootstrap.
-User can also automatically generate e-flashcards from dictionary lookups (currently supporting only English-English flahscards).
+User can automatically generate e-flashcards from dictionary lookups (current version only supports English-English flashcards).
 
 #### Features:
 - Add, remove, or edit a flashcard set
@@ -34,6 +34,5 @@ The `vocab.db` database consists of four tables for storing users, their flashca
 The structure of this database allows a user to own multiple sets, each of which can contain multiple flashcards, and to include as many definitions in a flashcard as they want.
 
 #### How This Application Uses BeautifulSoup4 to Generate Flashcards Automatically:
-BeautifulSoup4 (BS4) is a Python library for scraping data from a HTML or XML file. The application can utilize this libary to look up any English term on Wiktionary and extract from the page a list of definitions that can be added to the flashcard. I chose Wiktionary as the online dictionary source for my application due to its relatively simple HTML tree structure, allowing the application to search and retrieve the definitions with ease.
-The application will send a GET request to Wiktionary with `requests.get(url)`, where url is the link to the Wiktionary page corresponding to the English term of interest. Any whitespaces and punctuations in the term will be converted into appropriate characters to ensure the requested url is in the correct format.
-HTML elements containing the English definitions of the term will be obtained with `find_all` with the class and tag names of the parent elements being specified. The text of the elements will be extracted, reformatted, and appended to an array to be returned to the user.
+BeautifulSoup4 (BS4) is a Python library for scraping data from a HTML or XML file. The application can utilize this libary to look up any English term on Wiktionary and extract from the page a list of definitions that can be added to the flashcard. I chose Wiktionary as the online dictionary source for this application due to its relatively simple HTML tree structure, allowing the application to parse the definitions with ease.
+The application will send a GET request to Wiktionary with `requests.get(url)`, where url is the link to the Wiktionary definition of the term. The HTML elements containing the English definitions will be obtained with `find_all`. The text of the elements will be extracted, reformatted, and appended to an array to be returned to the user.
