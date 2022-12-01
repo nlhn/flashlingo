@@ -13,15 +13,15 @@ User can automatically generate e-flashcards from dictionary lookups (the curren
 
 #### What's Included in the Directory:
 The directory includes two folders and three files.
-The two folders, named `static` and `templates`, contain the CSS stylesheet and the HTML templates used for this project, respectively.
+The `static` and `templates` folders contain the CSS stylesheet and the HTML templates used for this project, respectively.
 The first file `application.py` stores the main function of this application. The second file `helpers.py` contains the helpers functions to be used for validating user's lookup request, prompting user to log into the application, and rendering error messages. The last file `vocab.db` is a SQLite database used for storing user's data.
 
 #### Usage:
 Here is an overview of how the application works:
-1. User will be prompted to sign into their account before they have access to the rest of the application. They must create an account if they do not have one.
-2. Onced logged in, user will be redirected to the main page which shows all of their active flashcard sets (if any). User can review, edit, or remove any of these sets. The navigation bar at the top of the screen now shows four options, `New Set` and `New Flashcard` on the left side, and `Change Password` and `Log Out` on the right side.
+1. User will need to log into their account before they can access the rest of the application. They must create an account if they do not have one.
+2. Onced logged in, user will be redirected to the homepage which shows all of their active flashcard sets (if any). User can review, edit, or remove any sets. The navigation bar at the top of the app shows four options, `New Set` and `New Flashcard` on the left side, and `Change Password` and `Log Out` on the right side.
 3. User must have at least one flashcard set before they can create a flashcard with `New Flashcard`.
-4. User can create their flashcards in two ways: entering the definition(s) manually or havinh the application parse the definition(s) from Wiktionary (the term must be English).
+4. User can create their flashcards in two ways: entering the definition(s) manually or having the application parse the definition(s) from Wiktionary (the term must be English).
 5. If the user's input is invalid, the application will render an error message explaining why the input was rejected.
 
 #### What's Stored in the SQL Database:
@@ -34,5 +34,5 @@ The `vocab.db` database consists of four tables for storing users, their flashca
 The structure of this database allows a user to own multiple sets, each of which can contain multiple flashcards, and to include as many definitions in a flashcard as they want.
 
 #### How This Application Uses BeautifulSoup4 to Generate Flashcards Automatically:
-BeautifulSoup4 (BS4) is a Python library for scraping data from a HTML or XML file. The application can utilize this libary to look up any English term on Wiktionary and extract from the page a list of definitions that can be added to the flashcard. I chose Wiktionary as the online dictionary source for this application due to its relatively simple HTML tree structure, allowing the application to parse the definitions with ease.
+BeautifulSoup4 (BS4) is a Python library for scraping data from a HTML or XML file. The application can utilize this libary to look up any English term on Wiktionary and extract from the source a list of definitions that can be added to the flashcard. I chose Wiktionary due to its simple HTML structure compared to other online dictionary websites, allowing the application to parse the definitions with ease.
 The application will send a GET request to Wiktionary with `requests.get(url)`, where url is the link to the Wiktionary definition of the term. The HTML elements containing the English definitions will be obtained with `find_all`. The text of the elements will be extracted, reformatted, and appended to an array to be returned to the user.
